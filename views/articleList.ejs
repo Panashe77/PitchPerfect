@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Articles List</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <div class="color-block">
+            <img src="logo.png" alt="Women's Football Logo" class="logo">
+            <h1>Women's Football News</h1>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/articles/list">Articles</a></li>
+                <li><a href="/articles/add">Add Article</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="article-list">
+        <h1>Articles List</h1>
+        <ul>
+			<% articles.forEach(function(article) { %>
+				<li>
+					<a href="/articles/edit/<%= article.id %>">
+					<h2><%= article.title %></h2>
+					</a>
+				</li>
+			<% }); %>
+		</ul>
+
+
+    </main>
+    <footer>
+        <p>© 2024 Women's Football News</p>
+    </footer>
+</body>
+</html>

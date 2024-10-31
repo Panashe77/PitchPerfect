@@ -1,0 +1,251 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fff; /* Set background to white */
+    color: #000; /* Set text color to black */
+}
+
+header {
+    background-color: #fff; /* Set header background to white */
+    color: #000; /* Set header text color to black */
+    padding: 1rem;
+    text-align: center;
+}
+
+.color-block {
+    background-color: lightblue; /* Light blue color block */
+    padding: 10px; /* Add some padding around the content */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    height: 80px; /* Adjust the height as needed */
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff; /* Set nav background to white */
+    padding: 10px;
+}
+
+.nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+.nav-links li {
+    margin: 0 10px;
+    position: relative; /* Needed for dropdown */
+}
+
+.nav-links a {
+    color: #000; /* Set navigation link text color to black */
+    text-decoration: none;
+    padding: 10px;
+    display: block;
+}
+
+.nav-links a:hover {
+    background-color: #555;
+    color: #fff; /* Change text color to white on hover */
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff; /* Set dropdown background to white */
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: #000; /* Set dropdown link text color to black */
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #555;
+    color: #fff; /* Change text color to white on hover */
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.login-link {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px;
+    background-color: lightblue; /* Light blue background for login link */
+    border-radius: 5px;
+    margin-left: auto; /* Pushes the login link to the far right */
+}
+
+.login-link:hover {
+    background-color: #555;
+}
+
+main {
+    padding: 1rem;
+}
+
+.news-grid, .matches-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.news-item, .match-item {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none; /* Remove underline from links */
+    color: #000; /* Set text color to black */
+}
+
+.news-item img, .match-item img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.news-item:hover, .match-item:hover {
+    background-color: #e0e0e0; /* Change background color on hover */
+}
+
+footer {
+    background-color: #fff; /* Set footer background to white */
+    color: #000; /* Set footer text color to black */
+    text-align: center;
+    padding: 1rem;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+.headline-match-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.headline-image {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.read-more {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.read-more:hover {
+    background-color: #0056b3;
+}
+
+.article-thumbnail, .article-image {
+    width: auto; /* Allows width to adjust */
+    max-width: 100%; /* Keeps image within the container's width */
+    height: auto; /* Allows height to adjust while maintaining aspect ratio */
+    max-height: 150px; /* Sets a maximum height to prevent interference */
+    display: block;
+    margin: 10px 0;
+    float: none;
+    clear: both;
+}
+
+
+
+
+.profile-link {
+    display: inline-block; /* Ensure the anchor tag wraps the icon properly */
+}
+
+.profile-icon {
+    width: 32px; /* Fixed width */
+    height: 32px; /* Fixed height */
+    border-radius: 50%; /* Optional: to make the icon circular */
+}
+
+form, .article-list {
+    background-color: #f9f9f9; /* Light background for forms */
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light shadow for a 3D effect */
+    margin: 20px auto;
+    max-width: 800px;
+}
+
+form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+form input, form textarea, form select, form button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+form button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+.article-list h2 {
+    color: #007bff;
+}
+
+.article-list a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.article-list a:hover {
+    color: #0056b3;
+}
+
+.article-list li {
+    list-style-type: none;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.article-list ul {
+    padding: 0;
+    margin: 0;
+}
+
+.header, .nav-links, .color

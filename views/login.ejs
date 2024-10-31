@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <h1>Login</h1>
+    </header>
+    <main>
+        <form id="loginForm" action="/users/login" method="post">  <!-- Ensure this is correct -->
+			<label for="username">Username:</label>
+			<input type="text" id="username" name="username" required>
+			<label for="password">Password:</label>
+			<input type="password" id="password" name="password" required>
+			<button id="loginButton" type="submit">Login</button>
+		</form>
+
+        <p>Not signed up? <a href="/users/signup">Sign up here</a></p>
+    </main>
+    <footer>
+        <p>© 2024 Women's Football News</p>
+    </footer>
+    <script src="/path/to/your/script.js"></script>
+</body>
+</html>
