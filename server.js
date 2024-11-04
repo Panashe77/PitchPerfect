@@ -11,12 +11,13 @@ const port = 3000;
 
 // MySQL session store options
 const sessionStore = new MySQLStore({
-    host: 'localhost',
-    port: 3306,
-    user: 'root',
-    password: '',
-    database: 'fawsl'
+    host: process.env.DB_HOST || 'localhost', // Use environment variable
+    port: process.env.DB_PORT || 3306,
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || '',
+    database: process.env.DB_NAME || 'fawsl'
 });
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
