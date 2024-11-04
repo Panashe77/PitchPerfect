@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../config/db');
 const bcrypt = require('bcrypt');
+const { readJSONFile, writeJSONFile } = require('../utils');
 
 // Serve the signup form
 router.get('/signup', (req, res) => {
@@ -12,15 +12,18 @@ router.get('/signup', (req, res) => {
 router.post('/signup', (req, res) => {
     const { name, email, username, password } = req.body;
     const hashedPassword = bcrypt.hashSync(password, 10);
-    const query = 'INSERT INTO users (name, email, username, password, created_at) VALUES (?, ?, ?, ?, NOW())';
-    db.query(query, [name, email, username, hashedPassword], (err, results) => {
-        if (err) {
-            console.error('Error creating user:', err);
-            res.status(500).send('Server error');
-            return;
-        }
-        res.redirect('/users/login');
-    });
+    const users = readJSONFile('users.json');
+    const newUser = {
+        id: Date.now(),
+        name,
+        email,
+        username,
+        password: hashedPassword,
+        created_at: new Date()
+    };
+    users.push(newUser);
+    writeJSONFile('users.json', users);
+    res.redirect('/users/login');
 });
 
 // Serve the login form
@@ -30,23 +33,16 @@ router.get('/login', (req, res) => {
 
 // Handle login submission
 router.post('/login', (req, res) => {
-    console.log('Login POST request received'); // Debug log
     const { username, password } = req.body;
-    const query = 'SELECT * FROM users WHERE username = ?';
-    db.query(query, [username], (err, results) => {
-        if (err) {
-            console.error('Error fetching user:', err);
-            res.status(500).send('Server error');
-            return;
-        }
-        if (results.length > 0 && bcrypt.compareSync(password, results[0].password)) {
-            req.session.user = results[0];
-            req.session.loggedIn = true;
-            res.redirect('/');
-        } else {
-            res.status(401).send('Invalid credentials');
-        }
-    });
+    const users = readJSONFile('users.json');
+    const user = users.find(u => u.username === username);
+    if (user && bcrypt.compareSync(password, user.password)) {
+        req.session.user = user;
+        req.session.loggedIn = true;
+        res.redirect('/');
+    } else {
+        res.status(401).send('Invalid credentials');
+    }
 });
 
 module.exports = router;
