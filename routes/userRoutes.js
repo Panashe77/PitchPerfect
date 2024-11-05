@@ -1,7 +1,22 @@
 const express = require('express');
 const router = express.Router();
+const fs = require('fs');
 const bcrypt = require('bcrypt');
-const { readJSONFile, writeJSONFile } = require('../utils');
+const { usersFilePath, ensureDataFileExists } = require('../utils');
+
+// Ensure the data file exists
+ensureDataFileExists(usersFilePath);
+
+// Helper function to read users
+const readUsers = () => {
+    const data = fs.readFileSync(usersFilePath, 'utf-8');
+    return JSON.parse(data);
+};
+
+// Helper function to write users
+const writeUsers = (users) => {
+    fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
+};
 
 // Serve the signup form
 router.get('/signup', (req, res) => {
@@ -11,10 +26,10 @@ router.get('/signup', (req, res) => {
 // Handle signup submission
 router.post('/signup', (req, res) => {
     const { name, email, username, password } = req.body;
+    const users = readUsers();
     const hashedPassword = bcrypt.hashSync(password, 10);
-    const users = readJSONFile('users.json');
     const newUser = {
-        id: Date.now(),
+        id: users.length + 1,
         name,
         email,
         username,
@@ -22,7 +37,7 @@ router.post('/signup', (req, res) => {
         created_at: new Date()
     };
     users.push(newUser);
-    writeJSONFile('users.json', users);
+    writeUsers(users);
     res.redirect('/users/login');
 });
 
@@ -33,11 +48,12 @@ router.get('/login', (req, res) => {
 
 // Handle login submission
 router.post('/login', (req, res) => {
+    console.log('Login POST request received'); // Debug log
     const { username, password } = req.body;
-    const users = readJSONFile('users.json');
+    const users = readUsers();
     const user = users.find(u => u.username === username);
     if (user && bcrypt.compareSync(password, user.password)) {
-        req.session.user = user;
+        req.session.user = user; // Ensure req.session is properly configured
         req.session.loggedIn = true;
         res.redirect('/');
     } else {
