@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 const bcrypt = require('bcrypt');
-const { usersFilePath, ensureDataFileExists } = require('../utils');
+const { usersFilePath, ensureDataFileExists } = require('../utils');  // Correct import path
 
 // Ensure the data file exists
 ensureDataFileExists(usersFilePath);
