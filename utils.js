@@ -18,4 +18,15 @@ const writeJSONFile = (fileName, data) => {
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 };
 
-module.exports = { readJSONFile, writeJSONFile };
+const ensureDataFileExists = (fileName) => {
+    const filePath = path.join(dataPath, fileName);
+    const dir = path.dirname(filePath);
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+    }
+    if (!fs.existsSync(filePath)) {
+        fs.writeFileSync(filePath, '[]');
+    }
+};
+
+module.exports = { readJSONFile, writeJSONFile, ensureDataFileExists };
