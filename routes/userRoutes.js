@@ -53,8 +53,16 @@ router.post('/login', (req, res) => {
     const users = readUsers();
     const user = users.find(u => u.username === username);
     if (user && bcrypt.compareSync(password, user.password)) {
+        console.log('User authenticated:', user); // Debug log
+        if (!req.session) {
+            console.error('Session is not initialized');
+            res.status(500).send('Session error');
+            return;
+        }
+        console.log('Session before setting user:', req.session); // Debug log
         req.session.user = user; // Ensure req.session is properly configured
         req.session.loggedIn = true;
+        console.log('Session after setting user:', req.session); // Debug log
         res.redirect('/');
     } else {
         res.status(401).send('Invalid credentials');
