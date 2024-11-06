@@ -22,26 +22,17 @@
     </header>
     <main>
         <article>
-			<h1><%= article.title %></h1>
-			<img src="<%= article.image %>" alt="<%= article.title %>" class="article-image">
-			
-			<% article.content.split('\n').forEach(function(paragraph) { %>
-				
-				<p><%= paragraph %></p>
-			<% }); %>
-			<% if (article.image) { %>
-			
-				<img src="<%= article.image %>" alt="<%= article.title %>" class="article-image">
-			<% } %>
-		</article>
-		
-		
-
-    
-		<footer>
-		
-			<p>© 2024 Women's Football News</p>
-		</footer>
-	</main>
+            <h1><%= article.title %></h1>
+            <% if (article.image) { %>
+                <img src="<%= article.image %>" alt="<%= article.title %>" class="article-image">
+            <% } %>
+            <% article.content.split('\n').forEach(function(paragraph) { %>
+                <p><%= paragraph %></p>
+            <% }); %>
+        </article>
+    </main>
+    <footer>
+        <p>© 2024 Women's Football News</p>
+    </footer>
 </body>
 </html>
