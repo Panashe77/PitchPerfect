@@ -100,4 +100,10 @@ router.get('/:id', (req, res) => {
     }
 });
 
+// API endpoint to fetch articles as JSON
+router.get('/api/articles', (req, res) => {
+    const articles = readJSONFile('articles.json');
+    res.json(articles);
+});
+
 module.exports = router;
