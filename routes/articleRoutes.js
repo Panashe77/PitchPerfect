@@ -38,12 +38,13 @@ router.post('/add', upload.single('image'), (req, res) => {
         created_at: new Date(),
         user_id: 1
     };
+    console.log(newArticle); // Log the newArticle object
     articles.push(newArticle);
     writeJSONFile('articles.json', articles);
     res.redirect('/');
 });
 
-// List all articles in article list page
+// List all articles in the article list page
 router.get('/list', (req, res) => {
     const articles = readJSONFile('articles.json');
     res.render('articleList', { articles });
