@@ -2,7 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const dataPath = './data'; // Create this directory to store JSON files
+const dataPath = path.join(__dirname, '../data'); // Ensure the correct path to the data directory
 
 const readJSONFile = (fileName) => {
     const filePath = path.join(dataPath, fileName);
@@ -19,6 +19,9 @@ const writeJSONFile = (fileName, data) => {
 };
 
 const ensureDataFileExists = (fileName) => {
+    if (typeof fileName !== 'string' || !fileName) {
+        throw new TypeError('The "fileName" argument must be of type string');
+    }
     const filePath = path.join(dataPath, fileName);
     const dir = path.dirname(filePath);
     if (!fs.existsSync(dir)) {
