@@ -1,22 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const fs = require('fs');
 const bcrypt = require('bcrypt');
-const { usersFilePath, ensureDataFileExists } = require('../utils');  // Correct import path
+const { ensureDataFileExists, readJSONFile, writeJSONFile } = require('../utils');
 
 // Ensure the data file exists
-ensureDataFileExists(usersFilePath);
+ensureDataFileExists('users.json');
 
 // Helper function to read users
-const readUsers = () => {
-    const data = fs.readFileSync(usersFilePath, 'utf-8');
-    return JSON.parse(data);
-};
+const readUsers = () => readJSONFile('users.json');
 
 // Helper function to write users
-const writeUsers = (users) => {
-    fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
-};
+const writeUsers = (users) => writeJSONFile('users.json', users);
 
 // Serve the signup form
 router.get('/signup', (req, res) => {
