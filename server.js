@@ -1,3 +1,5 @@
+const { ensureDataFileExists } = require('./utils');
+ensureDataFileExists('articles.json');
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
