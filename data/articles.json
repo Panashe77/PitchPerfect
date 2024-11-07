@@ -1,2 +1,20 @@
-
-[]
+[
+    {
+        "id": 1,
+        "title": "Breaking News: Women's World Cup",
+        "content": "The Women's World Cup has reached new heights...",
+        "category": "News",
+        "image": "/uploads/sample-image.jpg",
+        "created_at": "2024-11-07T16:02:24.000Z",
+        "user_id": 1
+    },
+    {
+        "id": 2,
+        "title": "Player Spotlight: Rising Stars",
+        "content": "Today, we highlight some of the rising stars...",
+        "category": "Features",
+        "image": "/uploads/sample-image2.jpg",
+        "created_at": "2024-11-07T16:03:24.000Z",
+        "user_id": 1
+    }
+]
