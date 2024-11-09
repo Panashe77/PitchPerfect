@@ -26,6 +26,7 @@
             <% if (article.image) { %>
                 <img src="<%= article.image %>" alt="<%= article.title %>" class="article-image">
             <% } %>
+            <p>Category: <%= article.category %></p> <!-- Display category -->
             <% article.content.split('\n').forEach(function(paragraph) { %>
                 <p><%= paragraph %></p>
             <% }); %>
