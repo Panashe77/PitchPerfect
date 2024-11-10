@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const multer = require('multer');
+const fs = require('fs');
 const path = require('path');
-const { readJSONFile, writeJSONFile } = require('../utils');
+const multer = require('multer');
 
-// Set up multer for file uploads
+const getArticles = () => JSON.parse(fs.readFileSync(path.join(__dirname, '../data/articles.json'), 'utf-8')).articles;
+const saveArticles = (articles) => fs.writeFileSync(path.join(__dirname, '../data/articles.json'), JSON.stringify({ articles }, null, 2));
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'public/uploads/');
@@ -27,33 +29,32 @@ router.post('/add', upload.single('image'), (req, res) => {
         res.status(400).send('All fields are required');
         return;
     }
-
-    const articles = readJSONFile('articles.json');
+    const imagePath = req.file ? '/uploads/' + req.file.filename : null;
+    const articles = getArticles();
     const newArticle = {
-        id: Date.now(),
+        id: articles.length + 1,
         title,
         content,
         category,
-        image: req.file ? '/uploads/' + req.file.filename : null,
+        image: imagePath,
         created_at: new Date(),
         user_id: 1
     };
-    console.log(newArticle); // Log the newArticle object
     articles.push(newArticle);
-    writeJSONFile('articles.json', articles);
-    res.redirect('/');
+    saveArticles(articles);
+    res.redirect('/articles/list');
 });
 
 // List all articles in the article list page
 router.get('/list', (req, res) => {
-    const articles = readJSONFile('articles.json');
+    const articles = getArticles();
     res.render('articleList', { articles });
 });
 
 // Serve the edit form
 router.get('/edit/:id', (req, res) => {
     const articleId = parseInt(req.params.id, 10);
-    const articles = readJSONFile('articles.json');
+    const articles = getArticles();
     const article = articles.find(a => a.id === articleId);
     if (article) {
         res.render('editArticle', { article });
@@ -70,18 +71,14 @@ router.post('/edit/:id', upload.single('image'), (req, res) => {
         res.status(400).send('All fields are required');
         return;
     }
-
-    const articles = readJSONFile('articles.json');
-    const articleIndex = articles.findIndex(a => a.id === articleId);
-    if (articleIndex !== -1) {
-        articles[articleIndex] = {
-            ...articles[articleIndex],
-            title,
-            content,
-            category,
-            image: req.file ? '/uploads/' + req.file.filename : articles[articleIndex].image,
-        };
-        writeJSONFile('articles.json', articles);
+    const articles = getArticles();
+    const article = articles.find(a => a.id === articleId);
+    if (article) {
+        article.title = title;
+        article.content = content;
+        article.category = category;
+        article.image = req.file ? '/uploads/' + req.file.filename : article.image;
+        saveArticles(articles);
         res.redirect(`/articles/${articleId}`);
     } else {
         res.status(404).send('Article not found');
@@ -91,19 +88,13 @@ router.post('/edit/:id', upload.single('image'), (req, res) => {
 // Serve an article
 router.get('/:id', (req, res) => {
     const articleId = parseInt(req.params.id, 10);
-    const articles = readJSONFile('articles.json');
+    const articles = getArticles();
     const article = articles.find(a => a.id === articleId);
     if (article) {
         res.render('article', { article });
     } else {
         res.status(404).send('Article not found');
     }
-});
-
-// API endpoint to fetch articles as JSON
-router.get('/api/articles', (req, res) => {
-    const articles = readJSONFile('articles.json');
-    res.json(articles);
 });
 
 module.exports = router;

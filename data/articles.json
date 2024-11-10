@@ -1,20 +1,13 @@
-[
+{
+  "articles": [
     {
-        "id": 1,
-        "title": "Breaking News: Women's World Cup",
-        "content": "The Women's World Cup has reached new heights...",
-        "category": "Previews and Predictions",
-        "image": "/uploads/sample-image.jpg",
-        "created_at": "2024-11-07T16:02:24.000Z",
-        "user_id": 1
-    },
-    {
-        "id": 2,
-        "title": "Player Spotlight: Rising Stars",
-        "content": "Today, we highlight some of the rising stars...",
-        "category": "Features",
-        "image": "/uploads/sample-image2.jpg",
-        "created_at": "2024-11-07T16:03:24.000Z",
-        "user_id": 1
+      "id": 1,
+      "title": "Early battle for a Champions League place?",
+      "content": "This Saturday there is a mouthwatering clash on the horizon with Brighton and Hove Albion facing off against Manchester United, in a match that looks to show the Champions League prospect pretenders from the real deal. Both teams have had quite a relatively impressive start to the season, especially if compared to both teams from last season at the same stage. \r\n\r\nBrighton has had a sort of renaissance this season with manager Dario Vidosic being given a new set of players that have proven to be effective in his hybrid playing system. The introduction of experienced internationals like Fran Kirby, Jelena Janković, and Nikita Parris has added a new dynamic to Brighton's playing style. This was more prevalent in their game against current league leaders; although the game ended in defeat, Brighton's players' belief in their philosophy of possession-style football was there to be seen. Man City looked to press Brighton high, targeting the two center-backs when the ball found its way to them. However, the way the Brighton players had faith in those center-backs and those around them to be able to play around the City attackers was a testament to not only their newfound confidence but also work on the training ground. The introduction of the new experienced players also played a massive role in the resilience of the team, with the team keeping a star-studded Man City side to a single goal and coming back strong against Aston Villa.\r\n\r\n\r\nMan United, on the other hand, was all about learning from the disappointments and mistakes of last season. After a strong 2022/2023 season, the team failed to meet those same standards, in part due to the departure of two of the team's main stars  Alessia Russo and Ona Batlle, both of whom were integral to their playing style. In terms of replacing the center forward gap left by Russo, which Melvine Malard failed to fulfill, they have looked to Elisabeth Terland, a signing that might be an indication of the positive direction the club is going in. Terland's goal-scoring record last season was quite exceptional and was on the radar of many clubs. An excellent signing that I think most people in the league missed is the signing of Dominique Janssen. Her experience and leadership qualities will come in good in a side that seems to have trouble getting out of intense pressure moments. The goalkeeping issue Man Utd had last season with Mary Earps' contract situation found a conclusion that I think benefits both parties in the end, with Earps going to PSG and Utd finally getting to play American goalkeeper Phallom Tullis-Joyce on a more permanent basis, a situation I believe will bring about a truly amazing keeper. Utd have had a near-perfect start, scoring multiple goals and keeping clean sheets in all their games. Marc Skinner's playing style is starting to take effect, and it looks like they are beginning to utilize the good attacking players they have on their hands.\r\n\r\nPrediction: 2-2 (Kirby, Parris, Terland, Miyazawa)\r\n\r\n\r\n",
+      "category": "Previews and Predictions",
+      "image": "/uploads/1731265368169.jpg",
+      "created_at": "2024-11-10T19:02:48.330Z",
+      "user_id": 1
     }
-]
+  ]
+}

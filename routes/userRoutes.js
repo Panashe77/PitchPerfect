@@ -1,16 +1,26 @@
 const express = require('express');
 const router = express.Router();
+const fs = require('fs');
+const path = require('path');
 const bcrypt = require('bcrypt');
-const { ensureDataFileExists, readJSONFile, writeJSONFile } = require('../utils');
 
-// Ensure the data file exists
-ensureDataFileExists('users.json');
+const getUsers = () => {
+    try {
+        const data = fs.readFileSync(path.join(__dirname, '../data/users.json'), 'utf-8');
+        return JSON.parse(data).users || [];
+    } catch (error) {
+        console.error('Error reading users:', error);
+        return [];
+    }
+};
 
-// Helper function to read users
-const readUsers = () => readJSONFile('users.json');
-
-// Helper function to write users
-const writeUsers = (users) => writeJSONFile('users.json', users);
+const saveUsers = (users) => {
+    try {
+        fs.writeFileSync(path.join(__dirname, '../data/users.json'), JSON.stringify({ users }, null, 2));
+    } catch (error) {
+        console.error('Error saving users:', error);
+    }
+};
 
 // Serve the signup form
 router.get('/signup', (req, res) => {
@@ -20,8 +30,8 @@ router.get('/signup', (req, res) => {
 // Handle signup submission
 router.post('/signup', (req, res) => {
     const { name, email, username, password } = req.body;
-    const users = readUsers();
     const hashedPassword = bcrypt.hashSync(password, 10);
+    const users = getUsers();
     const newUser = {
         id: users.length + 1,
         name,
@@ -31,7 +41,7 @@ router.post('/signup', (req, res) => {
         created_at: new Date()
     };
     users.push(newUser);
-    writeUsers(users);
+    saveUsers(users);
     res.redirect('/users/login');
 });
 
@@ -42,22 +52,17 @@ router.get('/login', (req, res) => {
 
 // Handle login submission
 router.post('/login', (req, res) => {
-    console.log('Login POST request received'); // Debug log
     const { username, password } = req.body;
-    const users = readUsers();
+    const users = getUsers();
     const user = users.find(u => u.username === username);
     if (user && bcrypt.compareSync(password, user.password)) {
-        console.log('User authenticated:', user); // Debug log
-        if (!req.session) {
-            console.error('Session is not initialized');
-            res.status(500).send('Session error');
-            return;
+        if (req.session) {
+            req.session.user = user;
+            req.session.loggedIn = true;
+            res.redirect('/');
+        } else {
+            res.status(500).send('Session is not available');
         }
-        console.log('Session before setting user:', req.session); // Debug log
-        req.session.user = user; // Ensure req.session is properly configured
-        req.session.loggedIn = true;
-        console.log('Session after setting user:', req.session); // Debug log
-        res.redirect('/');
     } else {
         res.status(401).send('Invalid credentials');
     }
