@@ -1,68 +1,94 @@
-// Password validation regex
-const passwordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+// Function to handle submitting a comment
+function submitComment(articleId, parentCommentId) {
+    const comment = parentCommentId
+        ? document.querySelector(`.reply-comment[data-id="${parentCommentId}"]`).value
+        : document.getElementById('new-comment').value;
 
-// Signup form validation
-document.getElementById('signupForm')?.addEventListener('submit', function(event) {
-    const password = document.getElementById('password').value;
-    if (!passwordPattern.test(password)) {
-        alert('Password must be at least 8 characters long and include one uppercase letter, one number, and one special character.');
-        event.preventDefault();
+    console.log("Submitting comment for article ID:", articleId, "Comment:", comment); // Debugging
+    fetch(`/articles/comment/${articleId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ comment: comment, parentCommentId: parentCommentId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Comment response:", data); // Debugging
+        if (data.success) {
+            // Update the comment section dynamically
+            renderComments(data.comments);
+            if (parentCommentId) {
+                document.querySelector(`.reply-comment[data-id="${parentCommentId}"]`).value = ''; // Clear the textarea
+            } else {
+                document.getElementById('new-comment').value = ''; // Clear the textarea
+            }
+        }
+    });
+}
+
+// Render comments function
+function renderComments(comments) {
+    const commentsWrapper = document.querySelector('.comments-wrp');
+    commentsWrapper.innerHTML = '';
+    comments.forEach(comment => {
+        const commentElement = createCommentElement(comment);
+        commentsWrapper.appendChild(commentElement);
+    });
+}
+
+// Create comment element
+function createCommentElement(comment) {
+    const template = document.querySelector('.comment-template');
+    const commentElement = template.content.cloneNode(true);
+    commentElement.querySelector('.usr-name').textContent = comment.user || 'Unknown User';
+    commentElement.querySelector('.c-body').textContent = comment.text;
+    commentElement.querySelector('.score-number').textContent = comment.score || 0;
+    const repliesWrapper = commentElement.querySelector('.replies');
+
+    if (comment.replies) {
+        comment.replies.forEach(reply => {
+            const replyElement = createCommentElement(reply);
+            repliesWrapper.appendChild(replyElement);
+        });
     }
-});
 
-// Existing script logic for posts and search functionality
-let postsData = "";
-const postsContainer = document.querySelector(".posts-container");
-const searchDisplay = document.querySelector(".search-display");
+    return commentElement;
+}
 
-// Fetch articles
-fetch("/api/articles")
-    .then(async (response) => {
-        postsData = await response.json();
-        postsData.map((post) => createPost(post));
+// Fetch and render initial comments
+fetch('/articles/<%= article._id %>/comments')
+    .then(response => response.json())
+    .then(data => {
+        renderComments(data.comments);
     });
 
-const createPost = (postData) => {
-    const { title, link, image, categories } = postData;
-    const post = document.createElement("div");
-    post.className = "post";
-    post.innerHTML = `
-        <a class="post-preview" href="${link}" target="_blank">
-            <img class="post-image" src="${image}">
-        </a>
-        <div class="post-content">
-            <p class="post-title">${title}</p>
-            <div class="post-tags">
-                ${categories.map((category) => `<span class="post-tag">${category}</span>`).join("")}
-            </div>
-        </div>
-    `;
-    postsContainer.append(post);
-};
+// Function to handle article likes
+function likeArticle(articleId) {
+    fetch(`/articles/like/${articleId}`, {
+        method: 'POST'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const likeButton = document.querySelector(`.like-button[data-id="${articleId}"]`);
+            likeButton.style.backgroundColor = 'black';
+            likeButton.textContent = `👍 (${data.likes})`;
+        }
+    });
+}
 
-const handleSearchPosts = (query) => {
-    const searchQuery = query.trim().toLowerCase();
-    if (searchQuery.length <= 1) {
-        resetPosts();
-        return;
-    }
-    let searchResults = postsData.filter(
-        (post) => post.categories.some((category) => category.toLowerCase().includes(searchQuery)) ||
-                  post.title.toLowerCase().includes(searchQuery)
-    );
-    searchDisplay.innerHTML = searchResults.length > 0 ? `${searchResults.length} results found for your query: ${query}` : "No results found";
-    postsContainer.innerHTML = "";
-    searchResults.map((post) => createPost(post));
-};
-
-const resetPosts = () => {
-    searchDisplay.innerHTML = "";
-    postsContainer.innerHTML = "";
-    postsData.map((post) => createPost(post));
-};
-
-const search = document.getElementById("search");
-search?.addEventListener("input", (event) => {
-    const query = event.target.value;
-    handleSearchPosts(query);
-});
+// Function to handle article dislikes
+function dislikeArticle(articleId) {
+    fetch(`/articles/dislike/${articleId}`, {
+        method: 'POST'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const dislikeButton = document.querySelector(`.dislike-button[data-id="${articleId}"]`);
+            dislikeButton.style.backgroundColor = 'black';
+            dislikeButton.textContent = `👎 (${data.dislikes})`;
+        }
+    });
+}
