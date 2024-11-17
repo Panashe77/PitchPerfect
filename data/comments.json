@@ -1,0 +1,11 @@
+{
+    "articles": [
+        {
+            "_id": "article123",
+            "title": "Sample Article",
+            "image": "/path/to/image.jpg",
+            "content": "This is the content of the article.",
+            "comments": []
+        }
+    ]
+}
