@@ -38,7 +38,10 @@ router.post('/add', upload.single('image'), (req, res) => {
         category,
         image: imagePath,
         created_at: new Date(),
-        user_id: 1
+        user_id: 1,
+        likes: 0,
+        dislikes: 0,
+        comments: []
     };
     articles.push(newArticle);
     saveArticles(articles);
@@ -84,6 +87,45 @@ router.post('/edit/:id', upload.single('image'), (req, res) => {
         res.status(404).send('Article not found');
     }
 });
+
+// Handle commenting and replies
+router.post('/comment/:articleId', (req, res) => {
+    const articleId = parseInt(req.params.articleId, 10);
+    const { comment, parentCommentId } = req.body;
+    const articles = getArticles();
+    const article = articles.find(a => a.id === articleId);
+    
+    if (article) {
+        const newComment = { id: new Date().toISOString(), text: comment, replies: [] };
+
+        if (parentCommentId) {
+            const parentComment = findCommentById(article.comments, parentCommentId);
+            if (parentComment) {
+                parentComment.replies.push(newComment);
+            }
+        } else {
+            article.comments.push(newComment);
+        }
+
+        saveArticles(articles);
+        res.json({ success: true, comments: article.comments });
+    } else {
+        res.status(404).send('Article not found');
+    }
+});
+
+function findCommentById(comments, id) {
+    for (const comment of comments) {
+        if (comment.id === id) {
+            return comment;
+        }
+        const foundComment = findCommentById(comment.replies, id);
+        if (foundComment) {
+            return foundComment;
+        }
+    }
+    return null;
+}
 
 // Serve an article
 router.get('/:id', (req, res) => {
