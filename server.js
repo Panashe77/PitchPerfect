@@ -29,6 +29,10 @@ app.get('/', (req, res) => {
     try {
         const data = fs.readFileSync(path.join(__dirname, 'data/articles.json'), 'utf-8');
         articles = JSON.parse(data).articles || [];
+
+        // Sort articles by created_at date in descending order (latest first)
+        articles.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
     } catch (error) {
         console.error('Error reading articles:', error);
         res.status(500).send('Server error');
@@ -48,7 +52,8 @@ let articles = [
         image: '/path/to/image.jpg',
         likes: 0,
         dislikes: 0,
-        comments: []
+        comments: [],
+        created_at: '2024-11-18T12:00:00.000Z' // Example date
     }
 ];
 

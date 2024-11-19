@@ -37,7 +37,7 @@ router.post('/add', upload.single('image'), (req, res) => {
         content,
         category,
         image: imagePath,
-        created_at: new Date(),
+        created_at: new Date().toISOString(), // Add created_at date
         user_id: 1,
         likes: 0,
         dislikes: 0,
@@ -94,7 +94,7 @@ router.post('/comment/:articleId', (req, res) => {
     const { comment, parentCommentId } = req.body;
     const articles = getArticles();
     const article = articles.find(a => a.id === articleId);
-    
+
     if (article) {
         const newComment = { id: new Date().toISOString(), text: comment, replies: [] };
 

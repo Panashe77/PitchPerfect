@@ -8,7 +8,6 @@
       "password": "hashedpassword",
       "created_at": "2024-11-10T16:00:00.000Z"
     },
-    
     {
       "id": 3,
       "name": "Panashe Hove",
@@ -16,6 +15,22 @@
       "username": "Kevin",
       "password": "$2b$10$xdpvcYfDS/ie0m1pxgpBxeXbaTuSDc/bntnsICgUge/KGS1YoZoiq",
       "created_at": "2024-11-10T15:32:02.960Z"
+    },
+    {
+      "id": 3,
+      "name": "kevin",
+      "email": "poiuh@gmai.com",
+      "username": "Kevin",
+      "password": "$2b$10$FnVy8vlP2/Eyn3GuBAiy9uX9Ypvq1qS26NjxFmHoGHVB7sKqifZOS",
+      "created_at": "2024-11-17T20:45:33.663Z"
+    },
+    {
+      "id": 4,
+      "name": "kevin",
+      "email": "poiuh@gmai.com",
+      "username": "Lego",
+      "password": "$2b$10$xcSI9fSNiBUFQl9unkbtr.U3Dc8Lupg3beDhz.Ebov4tIQyQmLWVa",
+      "created_at": "2024-11-18T19:23:54.433Z"
     }
   ]
 }
