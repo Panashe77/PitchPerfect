@@ -17,12 +17,16 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Serve the form for adding a new article
+// Middleware to set `loggedIn`
+router.use((req, res, next) => {
+    res.locals.loggedIn = req.isAuthenticated();
+    next();
+});
+
 router.get('/add', (req, res) => {
     res.render('newArticle');
 });
 
-// Handle form submission to add a new article
 router.post('/add', upload.single('image'), (req, res) => {
     const { title, content, category } = req.body;
     if (!title || !content || !category) {
@@ -37,7 +41,7 @@ router.post('/add', upload.single('image'), (req, res) => {
         content,
         category,
         image: imagePath,
-        created_at: new Date().toISOString(), // Add created_at date
+        created_at: new Date().toISOString(),
         user_id: 1,
         likes: 0,
         dislikes: 0,
@@ -48,13 +52,27 @@ router.post('/add', upload.single('image'), (req, res) => {
     res.redirect('/articles/list');
 });
 
-// List all articles in the article list page
 router.get('/list', (req, res) => {
     const articles = getArticles();
     res.render('articleList', { articles });
 });
 
-// Serve the edit form
+router.get('/general-news', (req, res) => {
+    const articles = getArticles().filter(article => article.category === 'General News');
+    res.render('generalNews', { articles });
+});
+
+router.get('/general-news/:id', (req, res) => {
+    const articleId = parseInt(req.params.id, 10);
+    const articles = getArticles();
+    const article = articles.find(a => a.id === articleId && a.category === 'General News');
+    if (article) {
+        res.render('generalNewsArticle', { article });
+    } else {
+        res.status(404).send('Article not found');
+    }
+});
+
 router.get('/edit/:id', (req, res) => {
     const articleId = parseInt(req.params.id, 10);
     const articles = getArticles();
@@ -66,7 +84,6 @@ router.get('/edit/:id', (req, res) => {
     }
 });
 
-// Handle article update
 router.post('/edit/:id', upload.single('image'), (req, res) => {
     const articleId = parseInt(req.params.id, 10);
     const { title, content, category } = req.body;
@@ -88,7 +105,6 @@ router.post('/edit/:id', upload.single('image'), (req, res) => {
     }
 });
 
-// Handle commenting and replies
 router.post('/comment/:articleId', (req, res) => {
     const articleId = parseInt(req.params.articleId, 10);
     const { comment, parentCommentId } = req.body;
@@ -127,7 +143,6 @@ function findCommentById(comments, id) {
     return null;
 }
 
-// Serve an article
 router.get('/:id', (req, res) => {
     const articleId = parseInt(req.params.id, 10);
     const articles = getArticles();
