@@ -1,7 +1,7 @@
 {
   "name": "fawsl",
   "version": "1.0.0",
-  "description": "file keeps track of your project's dependencies and other settings.",
+  "description": "File keeps track of your project's dependencies and other settings.",
   "main": "index.js",
   "scripts": {
     "test": "npm install express"
@@ -29,6 +29,7 @@
     "express-session": "^1.18.1",
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "passport": "^0.5.0" // Added passport here
   }
 }
