@@ -2,6 +2,8 @@ const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const fs = require('fs');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 const articleRoutes = require('./routes/articleRoutes');
 const userRoutes = require('./routes/userRoutes');
 
@@ -20,6 +22,29 @@ app.use(session({
     saveUninitialized: true,
     cookie: { secure: false } // Set to true if using HTTPS
 }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Passport configuration
+passport.use(new LocalStrategy(
+    function(username, password, done) {
+        // Replace with actual user verification logic
+        if (username === 'admin' && password === 'password') {
+            return done(null, { id: 1, username: 'admin' });
+        } else {
+            return done(null, false, { message: 'Incorrect credentials.' });
+        }
+    }
+));
+
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+    // Replace with actual user fetching logic
+    done(null, { id: 1, username: 'admin' });
+});
 
 app.use('/users', userRoutes);
 app.use('/articles', articleRoutes);
@@ -40,7 +65,7 @@ app.get('/', (req, res) => {
     }
     res.render('index', {
         articles,
-        loggedIn: req.session.loggedIn || false
+        loggedIn: req.isAuthenticated()
     });
 });
 
