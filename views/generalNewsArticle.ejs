@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= article.title %></title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/comments.css">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2S2ZGQ6F6H"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-2S2ZGQ6F6H');
+    </script>
+</head>
+<body>
+    <header>
+        <div class="color-block">
+            <img src="/logo.png" alt="Women's Football Logo" class="logo">
+            <h1>Women's Football News</h1>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/articles/list">Articles</a></li>
+                <li><a href="/articles/general-news">General News</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <article>
+            <h1><%= article.title %></h1>
+            <% if (article.image) { %>
+                <img src="<%= article.image %>" alt="<%= article.title %>" class="article-image">
+            <% } %>
+            <p>Author: <%= article.author %></p>
+            <div style="white-space: pre-wrap;">
+                <%= article.content %>
+            </div>
+        </article>
+        <div class="comment-section">
+            <!-- Comment section content here -->
+        </div>
+    </main>
+    <footer>
+        <p>© 2024 Women's Football News</p>
+    </footer>
+</body>
+</html>
